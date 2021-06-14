@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="1082707602741-aubspr02ko22cpfplo47lah08ugfpebd.apps.googleusercontent.com" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet" />
+    <title>Google Login</title>
+</head>
+
+<body>
+    <!-- component -->
+    <div class="bg-white lg:w-4/12 md:6/12 w-10/12 m-auto my-10 shadow-md">
+        <div class="py-8 px-8 rounded-xl">
+            <h1 class="font-medium text-2xl mt-3 text-center">Login</h1>
+            <form action="" class="mt-6">
+                <div class="my-5 text-sm">
+                    <label for="username" class="block text-black">Username</label>
+                    <input type="text" autofocus id="username" class="
+                rounded-sm
+                px-4
+                py-3
+                mt-3
+                focus:outline-none
+                bg-gray-100
+                w-full
+              " placeholder="Username" />
+                </div>
+                <div class="my-5 text-sm">
+                    <label for="password" class="block text-black">Password</label>
+                    <input type="password" id="password" class="
+                rounded-sm
+                px-4
+                py-3
+                mt-3
+                focus:outline-none
+                bg-gray-100
+                w-full
+              " placeholder="Password" />
+                    <div class="flex justify-end mt-2 text-xs text-gray-600">
+                        <a href="../../pages/auth/forget_password.html hover:text-black">Forget Password?</a
+              >
+            </div>
+          </div>
+
+          <button
+            class="
+              block
+              text-center text-white
+              bg-gray-800
+              p-3
+              duration-300
+              rounded-sm
+              hover:bg-black
+              w-full
+            "
+          >
+            Login
+          </button>
+        </form>
+
+        <div class="flex md:justify-between justify-center items-center mt-10">
+          <div
+            style="height: 1px"
+            class="bg-gray-300 md:block hidden w-4/12"
+          ></div>
+          <p class="md:mx-2 text-sm font-light text-gray-400">
+            Login With Social
+          </p>
+          <div
+            style="height: 1px"
+            class="bg-gray-300 md:block hidden w-4/12"
+          ></div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-2 mt-7">
+          <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                </div>
+                <p class="mt-12 text-xs text-center font-light text-gray-400">
+                    Don't have an account?
+                    <a href="../auth/register.html" class="text-black font-medium">
+            Create One
+          </a>
+                        </p>
+                    </div>
+                </div>
+
+                <script>
+                    function onSignIn(googleUser) {
+                        var id_token = googleUser.getAuthResponse().id_token;
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("POST", "/login");
+                        xhr.setRequestHeader(
+                            "Content-Type",
+                            "application/json"
+                        );
+                        xhr.onload = function() {
+                            console.log("Signed in as: " + xhr.responseText);
+                            if (xhr.responseText == "success") {
+                                location.assign("/dashbord");
+                                signOut();
+                            }
+                        };
+                        xhr.send(JSON.stringify({
+                            token: id_token
+                        }));
+                    }
+                </script>
+
+                <script>
+                    function signOut() {
+                        var auth2 = gapi.auth2.getAuthInstance();
+                        auth2.signOut().then(function() {
+                            console.log("User signed out.");
+                        });
+                    }
+                </script>
+</body>
+
+</html>
